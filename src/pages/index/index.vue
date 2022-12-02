@@ -1,68 +1,45 @@
 <template>
   <view class="index">
-    <view>
-      <img src="" alt="">
-    </view>
-     1{{selectedValue}}
-    <view class="btn">
-      <nut-button type="primary" @click="handleClick('text', msg2, true)">点我1</nut-button>
-      <nut-icon name="dongdong"></nut-icon>
-    </view>
-    <!-- <nut-toast :msg="msg" v-model:visible="show" :type="type" :cover="cover" /> -->
 
-    <nut-picker
-    v-model="selectedValue"
-    v-model:visible="show"
-    :columns="columns"
-    title="城市选择"
-    @confirm="confirm"
-  >
-  </nut-picker>
 
-    
+    <view v-if="state.banners.length>0" class="top-slider">
+      <nut-swiper class="top-slider-block" :init-page="0" :pagination-visible="true" pagination-color="#426543"
+                  auto-play="3000">
+        <nut-swiper-item v-for="item in state.banners" :key="item.cover">
+          <image class='img-cover' mode="aspectFill" :src="item.cover"/>
+        </nut-swiper-item>
+      </nut-swiper>
+    </view>
+
   </view>
 </template>
 
-<script>
-import { reactive, toRefs ,ref} from 'vue';
-export default {
-  name: 'Index',
-  components: {
-    
-  },
-  setup(){
-    const state = reactive({
-      msg: '欢迎使用 NutUI3.0 开发小程序',
-      msg2: '你成功了～',
-      type: 'text',
-      show: false,
-      cover: false,
-    });
-    const selectedValue = ref();
-      const columns = ref([
-        { text: '南京市', value: 'NanJing' },
-        { text: '无锡市', value: 'WuXi' },
-        { text: '海北藏族自治区', value: 'ZangZu' },
-        { text: '北京市', value: 'BeiJing' },
-        { text: '连云港市', value: 'LianYunGang' },
-        { text: '浙江市', value: 'ZheJiang' },
-        { text: '江苏市', value: 'JiangSu' }
-      ]);
-    const handleClick = (type, msg, cover = false) => {
-      state.show = true;
-      state.msg2 = msg;
-      state.type = type;
-      state.cover = cover;
-    };
+<script setup>
+import {reactive, } from 'vue';
 
-    return {
-      ...toRefs(state),
-      handleClick,
-      columns,
-      selectedValue
-    }
-  }
-}
+const state = reactive({
+  banners: []
+});
+
+setTimeout(() => {
+  const data = [{
+    "id": 5,
+    "cover": "https://cdn.anlulu.com/hero/img/banner0.jpg",
+  }, {
+    "id": 4,
+    "cover": "https://cdn.anlulu.com/hero/img/banner20223.png",
+  }, {
+    "id": 2,
+    "cover": "https://cdn.anlulu.com/hero/img/banner2.jpg",
+  }, {
+    "id": 3,
+    "cover": "https://cdn.anlulu.com/hero/img/banner0.jpg",
+  }, {
+    "id": 1,
+    "cover": "https://cdn.anlulu.com/hero/img/banner1.jpg",
+  }];
+  state.banners.push(...data);
+}, 1000);
 </script>
 
 <style lang="scss">
@@ -71,5 +48,41 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
+  background: orangered;
+  padding: 12px;
 }
+
+.top-slider {
+  background: var(--dream-primary-color);
+
+  .top-slider-block {
+    border-radius: 4px;
+    overflow: hidden;
+    line-height: 40vw;
+    height: 40vw;
+  }
+
+  .swiper-pagination {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+  }
+
+  .swiper-item {
+    line-height: 40vw;
+    height: 40vw;
+  }
+
+  taro-image-core.img-cover, .img-cover {
+    border-radius: 4px;
+    overflow: hidden;
+    display: block;
+    width: 100%;
+    height: 100%;
+    //object-fit: cover;
+    //object-position:50% 50%;
+  }
+}
+
 </style>
